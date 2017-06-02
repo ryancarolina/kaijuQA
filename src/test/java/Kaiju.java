@@ -62,12 +62,22 @@ public class Kaiju {
     }
 
     //Return OS type driver is running on
-    public java.lang.String getOsName(){
+    public String getOsName(){
         if(osName == null){
             osName = System.getProperty("os.name");
         }
         System.out.println(osName);
         return osName;
+    }
+
+    //Get target URL
+    public void getUrl(String url){
+        kaijuDriver.get(url);
+    }
+
+    //Kill the kaijuDriver
+    public void killKaijuDriver(){
+        kaijuDriver.close();
     }
 
 
