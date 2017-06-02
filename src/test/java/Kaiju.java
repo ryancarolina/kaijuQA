@@ -1,11 +1,17 @@
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
+import com.opencsv.CSVReader;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+
+import java.io.FileReader;
 import java.lang.String;
+
+import static junit.framework.TestCase.assertFalse;
 
 
 /**
@@ -78,6 +84,22 @@ public class Kaiju {
     //Kill the kaijuDriver
     public void killKaijuDriver(){
         kaijuDriver.close();
+    }
+
+    //Check that a string does NOT exist
+    public void checkForTextFalse(String text, String tagName){
+        String domText = kaijuDriver.findElement(By.tagName(tagName)).getText();
+        assertFalse(String.valueOf(true), domText.contains(text));
+        System.out.println(tagName + " does NOT contain " + text);
+    }
+
+    //CSV read and parse, this will take each separated value and insert it into an array
+    public void csvReadParse() throws java.io.IOException{
+        CSVReader reader = new CSVReader(new FileReader(System.getProperty("user.dir")+"/src/test/resources/testCSV.csv"), ',', '"', '\'', 1);
+        String [] nextLine;
+        while((nextLine = reader.readNext()) != null){
+            System.out.println(nextLine[0] + " " + nextLine[1] + " " + nextLine[2]);
+        }
     }
 
 
