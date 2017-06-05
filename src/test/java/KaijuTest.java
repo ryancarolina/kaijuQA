@@ -12,13 +12,20 @@ public class KaijuTest {
 
     @Before
     public void setUp(){
-        kaiju = new Kaiju("HTML");
+        kaiju = new Kaiju("CHROME");
     }
 
     @Test
     public void NavigateToTargetSite(){
+        kaiju.impWait(10);
+        kaiju.maximizeBrowserWindow();
         kaiju.getUrl("http://kaijuqa.com/");
         kaiju.checkForTextFalse("error", "body");
+        kaiju.checkforTextTrue("Chaos Engineering", "body");
+        kaiju.clickId("menu-item-172");
+        kaiju.checkforTextTrue("About Us", "body");
+        kaiju.clickPartialLink("Home");
+        kaiju.checkforTextTrue("Home", "body");
     }
 
     @Test
@@ -28,6 +35,6 @@ public class KaijuTest {
 
     @After
     public void killKaiju(){
-        kaiju.killKaijuDriver();
+        //kaiju.killKaijuDriver();
     }
 }
