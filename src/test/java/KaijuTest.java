@@ -12,7 +12,7 @@ public class KaijuTest {
 
     @Before
     public void setUp(){
-        kaiju = new Kaiju("CHROME");
+        kaiju = new Kaiju("HTML");
     }
 
     @Test
@@ -35,6 +35,6 @@ public class KaijuTest {
 
     @After
     public void killKaiju(){
-        //kaiju.killKaijuDriver();
+        kaiju.killKaijuDriver();
     }
 }
