@@ -7,7 +7,7 @@ import java.io.IOException;
 /**
  * Created by Ghyst on 6/2/2017.
  */
-public class KaijuTest {
+public class KaijuTestClassExample {
     public static Kaiju kaiju;
 
     @Before
