@@ -12,7 +12,7 @@ public class KaijuTestClassExample {
 
     @Before
     public void setUp(){
-        kaiju = new Kaiju("HTML");
+        kaiju = new Kaiju("CHROME");
     }
 
     @Test
@@ -33,8 +33,15 @@ public class KaijuTestClassExample {
         kaiju.csvReadParse();
     }
 
+    @Test
+    public void sendKeysIdTest(){
+        kaiju.impWait(10);
+        kaiju.maximizeBrowserWindow();
+        kaiju.getUrl("https://www.google.com/");
+        kaiju.sendKeysId("lst-ib","cheese");
+    }
+
     @After
-    public void killKaiju(){
-        kaiju.killKaijuDriver();
+    public void killKaiju(){kaiju.killKaijuDriver();
     }
 }
