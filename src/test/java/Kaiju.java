@@ -145,6 +145,10 @@ public class Kaiju {
         return nextLine;
     }
 
+    //Find element by id and send text
+    public void sendKeysId(String id,String text){
+        kaijuDriver.findElement(By.id(id)).sendKeys(text);
+    }
 
 
 
