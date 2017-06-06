@@ -12,7 +12,7 @@ public class KaijuTestClassExample {
 
     @Before
     public void setUp(){
-        kaiju = new Kaiju("CHROME");
+        kaiju = new Kaiju("HTML");
     }
 
     @Test
