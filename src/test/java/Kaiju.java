@@ -1,7 +1,6 @@
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.opencsv.CSVReader;
-import com.sun.jna.StringArray;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -33,7 +32,7 @@ public class Kaiju {
         if (browserType.equals("CHROME")) {
 
             try {
-                //ChromeDriver ver 2.29
+                //ChromeDriver ver 2.36
                 if(getOsName().contains("Windows")){
                     System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"/src/test/resources/chromedriver.exe");
                 }else if(getOsName().contains("Mac OS X")){
