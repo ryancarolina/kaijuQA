@@ -42,6 +42,6 @@ public class KaijuTestClassExample {
     }
 
     @After
-    public void killKaiju(){//kaiju.killKaijuDriver();
+    public void killKaiju(){kaiju.killKaijuDriver();
     }
 }

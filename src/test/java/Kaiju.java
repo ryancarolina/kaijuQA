@@ -46,9 +46,15 @@ public class Kaiju {
             //This is for SaucesLabs/Selenium Grid
         } else if (browserType.equals("REMOTE")) {
             try {
-                DesiredCapabilities caps = DesiredCapabilities.firefox();
+                //Set the browser type and other options below
+                DesiredCapabilities caps = DesiredCapabilities.chrome();
                 caps.setCapability("platform", "Windows 10");
                 caps.setCapability("version", "latest");
+                caps.setCapability("screenResolution", "1280x1024");
+                caps.setCapability("name", "Kaiju Test Framework");
+                caps.setCapability("extendedDebugging", "false"); //Saucelabs known 504 gateway error with xDebugging enabled
+                caps.setCapability("idleTimeout", "1000");
+                caps.setCapability("chromedriverVersion", "2.39");
                 //noinspection deprecation
                 kaijuDriver = new RemoteWebDriver(new java.net.URL(sauceURL), caps);
             } catch (Exception e) {
