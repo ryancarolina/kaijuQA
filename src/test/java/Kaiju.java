@@ -7,10 +7,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.FileReader;
 import java.lang.String;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.assertFalse;
@@ -26,7 +28,6 @@ public class Kaiju {
     String sauceAccessKey = " ";
     String sauceURL = "https://" + sauceUsername + ":" + sauceAccessKey + "@ondemand.saucelabs.com:443/wd/hub";
     String osName = null;
-
 
     public Kaiju(String browserType){
         if (browserType.equals("CHROME")) {
@@ -94,9 +95,27 @@ public class Kaiju {
         kaijuDriver.manage().window().maximize();
     }
 
+    //Waits
+
     //Set an implicit wait
     public void impWait(Integer seconds){
         kaijuDriver.manage().timeouts().implicitlyWait(seconds, TimeUnit.SECONDS);
+    }
+
+    //Wait for element to be visible by name
+    public void waitForElementVisibleByName(String name, Integer secondsToWait){
+        System.out.println("Waiting a max of " + secondsToWait + " seconds for " + name + " to become visible...");
+        WebDriverWait wait = new WebDriverWait(kaijuDriver, secondsToWait);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name(name)));
+    }
+
+    //Assertions
+
+    //Check that a element located by selector contains a string
+    public void checkForTextBySelector(String selector, String text){
+        System.out.println("Checking for string " + text + " within " + selector);
+        kaijuDriver.findElement(By.cssSelector(selector)).getText().contains(text);
+        System.out.println(selector + " does contain the string " + text);
     }
 
     //Check that a string does NOT exist
@@ -111,6 +130,11 @@ public class Kaiju {
         String domText = kaijuDriver.findElement(By.tagName(tagName)).getText();
         assertTrue(String.valueOf(true), domText.contains(text));
         System.out.println(tagName + " does contain " + text);
+    }
+
+    //Find element by css selector and click it
+    public void clickSelector(String selector){
+        kaijuDriver.findElement(By.cssSelector(selector)).click();
     }
 
     //Find element by xpath and click it
@@ -144,11 +168,17 @@ public class Kaiju {
         return nextLine;
     }
 
+    //Get web element and send keys
+
     //Find element by id and send text
-    public void sendKeysId(String id,String text){
+    public void getIdSendKeys(String id,String text){
+        System.out.println("Locating element by ID " + id + " sending text input " + text);
         kaijuDriver.findElement(By.id(id)).sendKeys(text);
     }
 
-
-
+    //Get element by name and send text
+    public void getNameSendKeys(String name, String text){
+        System.out.println("Locating element by name " + name + " sending text input " + text);
+        kaijuDriver.findElement(By.name(name)).sendKeys(text);
+    }
 }
