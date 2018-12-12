@@ -124,7 +124,7 @@ public class Kaiju {
     //Get target URL
     public void getUrl(String url){
         kaijuDriver.get(url);
-        System.out.print("Navigating to " + url);
+        System.out.print("Navigating to " + url + " ");
     }
 
     //Kill the kaijuDriver
@@ -156,6 +156,13 @@ public class Kaiju {
         System.out.println("Waiting a max of " + secondsToWait + " seconds for " + id + " to become visible...");
         WebDriverWait wait = new WebDriverWait(kaijuDriver, secondsToWait);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(id)));
+    }
+
+    //Wait for element to be visible by partial link text
+    public void waitForElementVisibleByPartialLinkText(String linkText, Integer secondsToWait){
+        System.out.println("Waiting a max of " + secondsToWait + " seconds for " + linkText + " to become visible...");
+        WebDriverWait wait = new WebDriverWait(kaijuDriver, secondsToWait);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.partialLinkText(linkText)));
     }
 
     //Assertions

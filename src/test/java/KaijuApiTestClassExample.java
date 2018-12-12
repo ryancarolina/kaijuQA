@@ -29,11 +29,12 @@ public class KaijuApiTestClassExample {
     }
 
     @Test
-    public void apiTestEcho(){
+    public void apiTestReturnJsonAssertString(){
         given()
                 .relaxedHTTPSValidation()
                 .get("http://echo.jsontest.com/key/value/Kaiju/QA")
                 .then()
+                .body(containsString("Kaiju"))
                 .statusCode(200)
                 .log()
                 .all();
