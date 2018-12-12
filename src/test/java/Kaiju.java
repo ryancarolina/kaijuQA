@@ -2,6 +2,8 @@ import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.opencsv.CSVReader;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
@@ -14,6 +16,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.io.FileReader;
 import java.lang.String;
 import java.util.concurrent.TimeUnit;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
@@ -28,6 +32,7 @@ public class Kaiju {
     String sauceAccessKey = " ";
     String sauceURL = "https://" + sauceUsername + ":" + sauceAccessKey + "@ondemand.saucelabs.com:443/wd/hub";
     String osName = null;
+    String gridNode = "http://ec2-18-232-71-47.compute-1.amazonaws.com:4444/wd/hub";
 
     public Kaiju(String browserType){
         if (browserType.equals("CHROME")) {
@@ -36,6 +41,7 @@ public class Kaiju {
                 //ChromeDriver ver 2.36
                 if(getOsName().contains("Windows")){
                     System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"/src/test/resources/chromedriver.exe");
+                    //ChromeDriver ver 2.43
                 }else if(getOsName().contains("Mac OS X")){
                     System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"/src/test/resources/chromedriver");
                 }
@@ -44,19 +50,34 @@ public class Kaiju {
                 System.out.println("Error during Chrome Test Setup" + e.toString());
             }
             //This is for SaucesLabs/Selenium Grid
-        } else if (browserType.equals("REMOTE")) {
+        } else if (browserType.equals("SAUCE")) {
             try {
                 //Set the browser type and other options below
                 DesiredCapabilities caps = DesiredCapabilities.chrome();
-                caps.setCapability("platform", "Windows 10");
-                caps.setCapability("version", "latest");
-                caps.setCapability("screenResolution", "1280x1024");
-                caps.setCapability("name", "Kaiju Test Framework");
-                caps.setCapability("extendedDebugging", "false"); //Saucelabs known 504 gateway error with xDebugging enabled
+                //caps.setCapability("platform", "Windows 2016");
+                caps.setCapability("version", "");
+                caps.setCapability("name", "Test: " + getTime() );
+                //caps.setCapability("extendedDebugging", "false"); //Saucelabs known 504 gateway error with xDebugging enabled
                 caps.setCapability("idleTimeout", "1000");
-                caps.setCapability("chromedriverVersion", "2.39");
+
                 //noinspection deprecation
                 kaijuDriver = new RemoteWebDriver(new java.net.URL(sauceURL), caps);
+            } catch (Exception e) {
+                System.out.println("Error during Remote Test Setup" + e.toString());
+            }
+            //Selenium Grid
+        } else if (browserType.equals("GRID")) {
+            try {
+                //Set the browser type and other options below
+                DesiredCapabilities caps = DesiredCapabilities.chrome();
+                //caps.setCapability("platform", "Windows 2016");
+                caps.setCapability("version", "");
+                caps.setCapability("name", "Test: " + getTime() );
+                //caps.setCapability("extendedDebugging", "false"); //Saucelabs known 504 gateway error with xDebugging enabled
+                caps.setCapability("idleTimeout", "1000");
+
+                //noinspection deprecation
+                kaijuDriver = new RemoteWebDriver(new java.net.URL(gridNode), caps);
             } catch (Exception e) {
                 System.out.println("Error during Remote Test Setup" + e.toString());
             }
@@ -77,6 +98,15 @@ public class Kaiju {
         }
     }
 
+    //Get timestamp
+    public String getTime(){
+        DateTimeFormatter timeStamp = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println(timeStamp.format(now));
+
+        return timeStamp.format(now);
+    }
+
     //Return OS type driver is running on
     public String getOsName(){
         if(osName == null){
@@ -86,9 +116,15 @@ public class Kaiju {
         return osName;
     }
 
+    //Setup Kaiju
+    public void setUp(String browserType){
+        Kaiju kaiju = new Kaiju(browserType);
+    }
+
     //Get target URL
     public void getUrl(String url){
         kaijuDriver.get(url);
+        System.out.print("Navigating to " + url);
     }
 
     //Kill the kaijuDriver
@@ -97,8 +133,8 @@ public class Kaiju {
     }
 
     //Maximize browser window
-    public void maximizeBrowserWindow(){
-        kaijuDriver.manage().window().maximize();
+    public void setDimensionBrowserWindow(Integer width, Integer height){
+        kaijuDriver.manage().window().setSize(new Dimension(width, height));
     }
 
     //Waits
@@ -113,6 +149,13 @@ public class Kaiju {
         System.out.println("Waiting a max of " + secondsToWait + " seconds for " + name + " to become visible...");
         WebDriverWait wait = new WebDriverWait(kaijuDriver, secondsToWait);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.name(name)));
+    }
+
+    //Wait for element to be visible by ID
+    public void waitForElementVisibleById(String id, Integer secondsToWait){
+        System.out.println("Waiting a max of " + secondsToWait + " seconds for " + id + " to become visible...");
+        WebDriverWait wait = new WebDriverWait(kaijuDriver, secondsToWait);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(id)));
     }
 
     //Assertions
@@ -180,6 +223,11 @@ public class Kaiju {
     public void getIdSendKeys(String id,String text){
         System.out.println("Locating element by ID " + id + " sending text input " + text);
         kaijuDriver.findElement(By.id(id)).sendKeys(text);
+    }
+
+    public void getNameSendKeyReturn(String name){
+        System.out.println("Locating element by NAME " + name + " sending return/enter key...");
+        kaijuDriver.findElement(By.name(name)).sendKeys(Keys.RETURN);
     }
 
     //Get element by name and send text
