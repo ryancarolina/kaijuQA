@@ -158,6 +158,13 @@ public class Kaiju {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(id)));
     }
 
+    //Wait for element to be visible by ID
+    public void waitForElementVisibleBySelector(String selector, Integer secondsToWait){
+        System.out.println("Waiting a max of " + secondsToWait + " seconds for " + selector + " to become visible...");
+        WebDriverWait wait = new WebDriverWait(kaijuDriver, secondsToWait);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(selector)));
+    }
+
     //Wait for element to be visible by partial link text
     public void waitForElementVisibleByPartialLinkText(String linkText, Integer secondsToWait){
         System.out.println("Waiting a max of " + secondsToWait + " seconds for " + linkText + " to become visible...");
@@ -185,7 +192,7 @@ public class Kaiju {
     public void assertTextTrue(String text, String tagName){
         String domText = kaijuDriver.findElement(By.tagName(tagName)).getText();
         assertTrue(String.valueOf(true), domText.contains(text));
-        System.out.println(tagName + " does contain " + text);
+        System.out.println(tagName + " contains " + text);
     }
 
     //Find element by css selector and click it
