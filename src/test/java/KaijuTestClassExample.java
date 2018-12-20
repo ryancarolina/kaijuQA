@@ -31,9 +31,14 @@ public class KaijuTestClassExample {
 
         kaiju.waitForElementVisibleByPartialLinkText("Forgot Your Password?", 30);
         kaiju.clickPartialLink("Forgot Your Password?");
+
+        kaiju.waitForElementVisibleById("forgot-username-input", 30);
+        kaiju.getIdSendKeys("forgot-username-input", "test@test.com");
+
+        kaiju.assertTextTrue("Success", "body");
     }
 
     @After
-    public void killKaiju(){kaiju.killKaijuDriver();
+    public void killKaiju(){//kaiju.killKaijuDriver();
     }
 }

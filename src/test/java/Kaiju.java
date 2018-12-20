@@ -175,14 +175,14 @@ public class Kaiju {
     }
 
     //Check that a string does NOT exist
-    public void checkForTextFalse(String text, String tagName){
+    public void assertTextFalse(String text, String tagName){
         String domText = kaijuDriver.findElement(By.tagName(tagName)).getText();
         assertFalse(String.valueOf(true), domText.contains(text));
         System.out.println(tagName + " does NOT contain " + text);
     }
 
     //Check that a string does exist
-    public void checkforTextTrue(String text, String tagName){
+    public void assertTextTrue(String text, String tagName){
         String domText = kaijuDriver.findElement(By.tagName(tagName)).getText();
         assertTrue(String.valueOf(true), domText.contains(text));
         System.out.println(tagName + " does contain " + text);

@@ -14,7 +14,9 @@ public class KaijuApiTestClassExample {
                 .get("https://www.google.com")
                 .then()
                 .body(containsString("google"))
-                .statusCode(200).log().all();
+                .statusCode(200)
+                .log()
+                .all();
     }
 
     @Test
