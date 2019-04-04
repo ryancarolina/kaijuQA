@@ -8,3 +8,6 @@ For example, Chromedriver is packaged within the Kaiju framework. The driver for
 In the future, Kaiju will support built in functionality for API, performance, load, security, and many other types of testing. All in an effort to build a framework that ANY QA professional would find useful and time efficient.
 
 
+04 APR 2019
+
+Kaiju currently uses RestASSURED for API testing, Gatling for peformance and load testing, and selenium/webdriver for UI functional testing.
