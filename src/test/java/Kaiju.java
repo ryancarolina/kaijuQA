@@ -9,7 +9,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -158,11 +157,18 @@ public class Kaiju {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(id)));
     }
 
-    //Wait for element to be visible by ID
+    //Wait for element to be visible by Selector
     public void waitForElementVisibleBySelector(String selector, Integer secondsToWait){
         System.out.println("Waiting a max of " + secondsToWait + " seconds for " + selector + " to become visible...");
         WebDriverWait wait = new WebDriverWait(kaijuDriver, secondsToWait);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(selector)));
+    }
+
+    //Wait for element to be visible by Xpath
+    public void waitForElementVisibleByXpath(String xpath, Integer secondsToWait){
+        System.out.println("Waiting a max of " + secondsToWait + " seconds for " + xpath + " to become visible...");
+        WebDriverWait wait = new WebDriverWait(kaijuDriver, secondsToWait);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
     }
 
     //Wait for element to be visible by partial link text
@@ -228,6 +234,7 @@ public class Kaiju {
         while((nextLine = reader.readNext()) != null){
             System.out.println(nextLine[0] + " " + nextLine[1] + " " + nextLine[2]);
         }
+        
         return nextLine;
     }
 
