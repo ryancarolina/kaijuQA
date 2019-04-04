@@ -1,4 +1,3 @@
-![alt text](https://www.kisspng.com/png-godzilla-reboot-silhouette-kaiju-clip-art-godzilla-742174/)
 # kaijuQA
 Automated test framework
 
