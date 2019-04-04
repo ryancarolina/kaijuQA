@@ -1,5 +1,5 @@
 ![](https://i.pinimg.com/originals/16/72/c9/1672c9908cc1fc56b168fca54613c142.jpg)
-# kaijuQA
+# KaijuQA
 Kaiju is being built to handle a lot of the methods and "features" that I have built many times over as I have changed projects or companies. My plan is to build out this framework so that a QA engineer could clone into the repo and essentially have a test automation framework ready to perform work and scale with ease.
 
 For example, Chromedriver is packaged within the Kaiju framework. The driver for both Windows and Mac OSX is included and logic already in place so that Kaiju will detect the OS type that is attempting to use the driver and choose the correct version. Another example, HTMLUnitDriver is already built into Kaiju so browserless testing is ready out of the box. If you use Sauce Labs or Selenium Grid, support for remote testing is also already built into Kaiju, you simply need to point Kaiju towards the IP of your Selenium hub.
