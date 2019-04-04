@@ -8,4 +8,4 @@ For example, Chromedriver is packaged within the Kaiju framework. The driver for
 
 After you clone into the repo, besure to bring this into your IDE as a maven project. Personally I suggest intellij, but other IDE's should work so long as they support JDK 1.8 and scala. You will need the scala plugin in intellij for gatling performance/load testing to work properly.
 
-Kaiju currently uses RestASSURED for API testing, Gatling for peformance and load testing, and selenium/webdriver for UI functional testing.
+Kaiju currently uses RestASSURED for API testing, Gatling for performance and load testing, and selenium/webdriver for UI functional testing.
