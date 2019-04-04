@@ -190,6 +190,7 @@ public class Kaiju {
     //Kill the kaijuDriver
     public void killKaijuDriver(){
         kaijuDriver.close();
+        System.out.println("Kaiju destroyed!");
     }
 
     //Scroll to bottom of page
@@ -288,7 +289,7 @@ public class Kaiju {
         String actualTitle = kaijuDriver.getTitle();
         String expectedTitle = title;
         assertEquals(expectedTitle, actualTitle);
-        System.out.println("Title is " + actualTitle);
+        System.out.println("Title is " + actualTitle + " as expected");
     }
 
     //Check if element is displayed by Css Selector
@@ -530,7 +531,7 @@ public class Kaiju {
     //Get target URL
     public void getUrl(String url){
         kaijuDriver.get(url);
-        System.out.print("Navigating to " + url + " ");
+        System.out.println("Navigating to " + url + " ");
     }
 
     //Read from data source *************************
