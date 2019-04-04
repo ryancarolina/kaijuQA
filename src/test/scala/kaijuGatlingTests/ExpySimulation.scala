@@ -44,21 +44,6 @@ class ExpySimulation extends Simulation {
 			.get("/services/#Program-TechnologyStrategies")
 			.headers(headers_2),
             http("request_4")
-			.get("")
-			.headers(headers_2),
-            http("request_5")
-			.get("")
-			.headers(headers_1),
-            http("request_6")
-			.get("")
-			.headers(headers_1),
-            http("request_7")
-			.get(""),
-            http("request_8")
-			.get(""),
-            http("request_9")
-			.get(""),
-            http("request_10")
 			.get("")))
 		.pause(5)
 		.exec(http("request_11")
