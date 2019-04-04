@@ -1,10 +1,10 @@
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.opencsv.CSVReader;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
+import io.gatling.commons.stats.assertion.In;
+import org.apache.commons.io.FileUtils;
+import org.apache.poi.ss.formula.functions.Today;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -12,6 +12,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
 import java.io.FileReader;
 import java.lang.String;
 import java.util.concurrent.TimeUnit;
@@ -97,6 +98,9 @@ public class Kaiju {
         }
     }
 
+    //Time and Dates
+
+
     //Get timestamp
     public String getTime(){
         DateTimeFormatter timeStamp = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -115,11 +119,6 @@ public class Kaiju {
         return osName;
     }
 
-    //Setup Kaiju
-    public void setUp(String browserType){
-        Kaiju kaiju = new Kaiju(browserType);
-    }
-
     //Get target URL
     public void getUrl(String url){
         kaijuDriver.get(url);
@@ -136,7 +135,36 @@ public class Kaiju {
         kaijuDriver.manage().window().setSize(new Dimension(width, height));
     }
 
-    //Waits
+    //Waits **********************************
+
+    //Wait for attribute value to be visible by Xpath
+    public void waitForConditionAttributeContainsXpath(String xpath, Integer secondsToWait, String attribute, String value){
+        System.out.println("Waiting a max of " + secondsToWait + " seconds for " + value + " to become visible...");
+        WebDriverWait wait = new WebDriverWait(kaijuDriver, secondsToWait);
+        wait.until(ExpectedConditions.attributeContains(By.xpath(xpath),attribute,value));
+    }
+
+    //Wait for element to be visible className
+    public void waitForElementVisibleClass(String className, Integer secondsToWait){
+        System.out.println("Waiting a max of " + secondsToWait + " seconds for " + className + " to become visible...");
+        WebDriverWait wait = new WebDriverWait(kaijuDriver, secondsToWait);
+        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.className(className)));
+
+    }
+
+    //Wait for element to contain text CSS
+    public void waitForElementContainsTextCss(String selector, String text, Integer secondsToWait){
+        System.out.println("Waiting a max of " + secondsToWait + " seconds for " + text + " to become visible...");
+        WebDriverWait wait = new WebDriverWait(kaijuDriver, secondsToWait);
+        wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector(selector),text));
+    }
+
+    //Wait for element to contain text using Class
+    public void waitForElementContainsTextClass(String className, String text, Integer secondsToWait){
+        System.out.println("Waiting a max of " + secondsToWait + " seconds for " + text + " to become visible...");
+        WebDriverWait wait = new WebDriverWait(kaijuDriver, secondsToWait);
+        wait.until(ExpectedConditions.textToBePresentInElementLocated(By.className(className),text));
+    }
 
     //Set an implicit wait
     public void impWait(Integer seconds){
@@ -180,6 +208,32 @@ public class Kaiju {
 
     //Assertions
 
+    //Take a screenshot and save it to the resources file
+    public void takeScreenShot(){
+        try {
+            System.out.println("Taking screenshot...");
+            File scrFile = ((TakesScreenshot) kaijuDriver).getScreenshotAs(OutputType.FILE);
+            FileUtils.copyFile(scrFile, new File(System.getProperty("user.dir") + "/src/test/resources/" + getTime() + "AutoScreenShot.png"));
+
+        }catch (Exception e){
+            System.out.println("Error during screenshot " + e);
+        }
+    }
+
+    //Check if an element is selected
+    public Boolean isElementSelectedByName(String name){
+        waitForElementVisibleByName(name, 120);
+
+        Boolean  isChecked = kaijuDriver.findElement(By.name(name)).isSelected();
+
+        if(isChecked == true){
+            System.out.println(name + " is selected");
+        } else {
+            System.out.println(name + " is NOT selected");
+        }
+        return isChecked;
+    }
+
     //Check that a element located by selector contains a string
     public void checkForTextBySelector(String selector, String text){
         System.out.println("Checking for string " + text + " within " + selector);
@@ -200,6 +254,8 @@ public class Kaiju {
         assertTrue(String.valueOf(true), domText.contains(text));
         System.out.println(tagName + " contains " + text);
     }
+
+    //Locate element and click it ***************************
 
     //Find element by css selector and click it
     public void clickSelector(String selector){
@@ -226,6 +282,8 @@ public class Kaiju {
         kaijuDriver.findElement(By.partialLinkText(link)).click();
     }
 
+    //Read from data source *************************
+
     //CSV read and parse, this will take each separated value and insert it into an array
     public String[] csvReadParse() throws java.io.IOException{
         //FileReader("yourFileHere.csv") the method is currently getting the csv file from the resources dir.
@@ -238,7 +296,21 @@ public class Kaiju {
         return nextLine;
     }
 
-    //Get web element and send keys
+    //Return a random integer between 1 and 100
+    public Integer random1To100(){
+        Integer target = rangeOfRandomNum(1, 100);
+
+        return target;
+    }
+
+    //Return a range of random numbers
+    public Integer rangeOfRandomNum(Integer min, Integer max){
+        int range = (max - min) + 1;
+
+        return (int)(Math.random() * range) + min;
+    }
+
+    //Locate web element and send input ***************************
 
     //Find element by id and send text
     public void getIdSendKeys(String id,String text){
