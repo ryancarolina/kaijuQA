@@ -8,6 +8,7 @@ import org.junit.Assert;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -17,6 +18,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.io.File;
 import java.io.FileReader;
 import java.lang.String;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Calendar;
@@ -26,6 +29,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 import java.util.logging.Level;
 
+import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
@@ -151,6 +155,22 @@ public class Kaiju {
         return timeStamp.format(now);
     }
 
+    //Misc ****************************************
+
+    //Return a random integer between 1 and 100
+    public Integer random1To100(){
+        Integer target = rangeOfRandomNum(1, 100);
+
+        return target;
+    }
+
+    //Return a range of random numbers
+    public Integer rangeOfRandomNum(Integer min, Integer max){
+        int range = (max - min) + 1;
+
+        return (int)(Math.random() * range) + min;
+    }
+
     //Return OS type driver is running on
     public String getOsName(){
         if(osName == null){
@@ -160,15 +180,22 @@ public class Kaiju {
         return osName;
     }
 
-    //Get target URL
-    public void getUrl(String url){
-        kaijuDriver.get(url);
-        System.out.print("Navigating to " + url + " ");
+    //Execute Java Script
+    public void executeJavaScript(String javascript){
+        JavascriptExecutor js = (JavascriptExecutor)kaijuDriver;
+        js.executeScript(javascript);
+
     }
 
     //Kill the kaijuDriver
     public void killKaijuDriver(){
         kaijuDriver.close();
+    }
+
+    //Scroll to bottom of page
+    public void scrollToBottom(){
+        JavascriptExecutor js = (JavascriptExecutor)kaijuDriver;
+        js.executeScript("scroll(0, 1000)");
     }
 
     //Maximize browser window
@@ -256,6 +283,44 @@ public class Kaiju {
 
     //Assertions *******************************
 
+    //Check expected title vs actual title
+    public void checkTitle(String title){
+        String actualTitle = kaijuDriver.getTitle();
+        String expectedTitle = title;
+        assertEquals(expectedTitle, actualTitle);
+        System.out.println("Title is " + actualTitle);
+    }
+
+    //Check if element is displayed by Css Selector
+    public void checkForElementUsingCssSelector(String cssSelector){
+        kaijuDriver.findElement(By.cssSelector(cssSelector)).isDisplayed();
+        System.out.println("Element " + cssSelector + " is displayed");
+    }
+
+    //Check if element is displayed by ID
+    public void checkForElementUsingId(String id){
+        kaijuDriver.findElement(By.id(id)).isDisplayed();
+        System.out.println("Element " + id + " is displayed");
+    }
+
+    //Check if element is displayed by name
+    public void checkForElementUsingName(String name){
+        kaijuDriver.findElement(By.name(name)).isDisplayed();
+        System.out.println("Element " + name + " is displayed");
+    }
+
+    //Check if element is displayed by tagName
+    public  void checkIfElementIsDisplayedTagName(String tagName){
+        kaijuDriver.findElement(By.tagName(tagName)).isDisplayed();
+        System.out.println("Element " + tagName + " is displayed");
+    }
+
+    //Check if element is displayed using xpath
+    public void checkForElementUsingXpath(String path){
+        kaijuDriver.findElement(By.xpath(path)).isDisplayed();
+        System.out.println("Element " + path + " is displayed");
+    }
+
     //Check for text in URL
     public void checkForTextTrueUrl(String text){
         String URL = kaijuDriver.getCurrentUrl();
@@ -317,6 +382,82 @@ public class Kaiju {
     }
 
     //Locate element and perform an action with it ***************************
+
+    //Get Text Using CSS
+    public String getTextUsingCss(String selector){
+        String uiText = kaijuDriver.findElement(By.cssSelector(selector)).getText();
+        return uiText;
+    }
+
+    //Get text using Class
+    public String getTextUsingClass(String className){
+        String uiText = kaijuDriver.findElement(By.className(className)).getText();
+        return uiText;
+    }
+
+    //Find element by id and send text
+    public void getIdSendKeys(String id,String text){
+        System.out.println("Locating element by ID " + id + " sending text input " + text);
+        kaijuDriver.findElement(By.id(id)).sendKeys(text);
+    }
+
+    public void getNameSendKeyReturn(String name){
+        System.out.println("Locating element by NAME " + name + " sending return/enter key...");
+        kaijuDriver.findElement(By.name(name)).sendKeys(Keys.RETURN);
+    }
+
+    //Get element by name and send text
+    public void getNameSendKeys(String name, String text){
+        System.out.println("Locating element by name " + name + " sending text input " + text);
+        kaijuDriver.findElement(By.name(name)).sendKeys(text);
+    }
+
+    //Get attribute from web element through css selector
+    public String getAttributeFromWebElement(String cssSelector, String attribute){
+        WebElement onElement = kaijuDriver.findElement(By.cssSelector(cssSelector));
+
+        String returnAttribute = onElement.getAttribute(attribute);
+
+        return returnAttribute;
+    }
+
+    //hover element using action and CSS Selector
+    public void hoverElementUsingActionCssSelector(String selector) {
+        WebElement element = kaijuDriver.findElement(By.cssSelector(selector));
+        Actions actions = new Actions(kaijuDriver);
+        actions.moveToElement(element).perform();
+    }
+
+    //Click an element by Class name
+    public void clickClass(String className){
+        kaijuDriver.findElement(By.className(className)).click();
+        System.out.println("Clicking" + className);
+    }
+
+    //Click element using action and CSS Selector
+    public void clickElementUsingActionCssSelector(String selector) {
+        WebElement element = kaijuDriver.findElement(By.cssSelector(selector));
+        System.out.println(element);
+        Actions actions = new Actions(kaijuDriver);
+        actions.moveToElement(element).click().perform();
+        System.out.println("Clicking " + element + " element with actions");
+
+    }
+
+    //Click element using action and ID
+    public void clickElementUsingActionID(String id){
+        WebElement element = kaijuDriver.findElement(By.id(id));
+        System.out.println(element);
+        Actions actions = new Actions(kaijuDriver);
+        actions.moveToElement(element).click().perform();
+        System.out.println("Clicking " + element + " element with actions");
+    }
+
+    //Click an element by tagName
+    public void clickTagName(String tagName){
+        kaijuDriver.findElement(By.tagName(tagName)).click();
+        System.out.println("Clicking " + tagName);
+    }
 
     //Click the dropdown by ID and select a value by index
     public void selectDropDownById(String id, String index){
@@ -386,7 +527,34 @@ public class Kaiju {
         kaijuDriver.findElement(By.partialLinkText(link)).click();
     }
 
+    //Get target URL
+    public void getUrl(String url){
+        kaijuDriver.get(url);
+        System.out.print("Navigating to " + url + " ");
+    }
+
     //Read from data source *************************
+
+    //Connect to db
+    public Connection dataBaseConnection() {
+        String targetDbase = "jdbc:mysql://35.188.77.255:3306/clone";
+        String uName = "username";
+        String pWord = "password";
+
+        Connection connection = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            System.out.println("Attempting to connect to target database " + targetDbase);
+
+            connection = DriverManager.getConnection(targetDbase, uName, pWord);
+
+        } catch (Exception e) {
+            System.out.println("Error during db connection..." + e);
+        }
+
+        return connection;
+    }
 
     //CSV read and parse, this will take each separated value and insert it into an array
     public String[] csvReadParse() throws java.io.IOException{
@@ -400,40 +568,7 @@ public class Kaiju {
         return nextLine;
     }
 
-    //Return a random integer between 1 and 100
-    public Integer random1To100(){
-        Integer target = rangeOfRandomNum(1, 100);
-
-        return target;
-    }
-
-    //Return a range of random numbers
-    public Integer rangeOfRandomNum(Integer min, Integer max){
-        int range = (max - min) + 1;
-
-        return (int)(Math.random() * range) + min;
-    }
-
-    //Locate web element and send input ***************************
-
-    //Find element by id and send text
-    public void getIdSendKeys(String id,String text){
-        System.out.println("Locating element by ID " + id + " sending text input " + text);
-        kaijuDriver.findElement(By.id(id)).sendKeys(text);
-    }
-
-    public void getNameSendKeyReturn(String name){
-        System.out.println("Locating element by NAME " + name + " sending return/enter key...");
-        kaijuDriver.findElement(By.name(name)).sendKeys(Keys.RETURN);
-    }
-
-    //Get element by name and send text
-    public void getNameSendKeys(String name, String text){
-        System.out.println("Locating element by name " + name + " sending text input " + text);
-        kaijuDriver.findElement(By.name(name)).sendKeys(text);
-    }
-
-    //Handle alerts and/or JS popups
+    //Handle alerts and/or JS popups ***************************************
 
     //Alert
     public void alert(){
