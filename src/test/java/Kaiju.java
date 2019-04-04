@@ -4,20 +4,27 @@ import com.opencsv.CSVReader;
 import io.gatling.commons.stats.assertion.In;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.formula.functions.Today;
+import org.junit.Assert;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.io.FileReader;
 import java.lang.String;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
+import java.util.logging.Level;
 
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
@@ -98,8 +105,42 @@ public class Kaiju {
         }
     }
 
-    //Time and Dates
+    //DO NOT REMOVE
+    public void loggingOff(){
+        java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(Level.OFF);
+        System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.NoOpLog");
+    }
 
+    //Time and Dates *********************************
+
+    //Get date
+    public LocalDate getDate(){
+        LocalDate today = LocalDate.now();
+        System.out.println(today);
+        return today;
+    }
+
+    //Get month
+    public String getMonth(){
+        Date date = new Date();
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        Integer monthRaw = localDate.getMonthValue();
+        if(monthRaw > 9){
+            String month = monthRaw.toString();
+            return month;
+        }else{
+            String month = "0" + monthRaw;
+            System.out.println("Month " + month);
+            return month;
+        }
+    }
+
+    //Get year
+    public String getYear(){
+        String year = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
+        System.out.println("Year " + year);
+        return year;
+    }
 
     //Get timestamp
     public String getTime(){
@@ -137,9 +178,16 @@ public class Kaiju {
 
     //Waits **********************************
 
+    //Wait for condition attribute contains by ID
+    public void waitForConditionAttributeContainsId(String id, Integer secondsToWait, String attribute, String value){
+        System.out.println("Waiting for attribute " + attribute + " to obtain value " + value + " for a max time of " + secondsToWait);
+        WebDriverWait wait = new WebDriverWait(kaijuDriver, secondsToWait);
+        wait.until(ExpectedConditions.attributeContains(By.id(id),attribute,value));
+    }
+
     //Wait for attribute value to be visible by Xpath
     public void waitForConditionAttributeContainsXpath(String xpath, Integer secondsToWait, String attribute, String value){
-        System.out.println("Waiting a max of " + secondsToWait + " seconds for " + value + " to become visible...");
+        System.out.println("Waiting for attribute " + attribute + " to obtain value " + value + " for a max time of " + secondsToWait);
         WebDriverWait wait = new WebDriverWait(kaijuDriver, secondsToWait);
         wait.until(ExpectedConditions.attributeContains(By.xpath(xpath),attribute,value));
     }
@@ -206,7 +254,20 @@ public class Kaiju {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.partialLinkText(linkText)));
     }
 
-    //Assertions
+    //Assertions *******************************
+
+    //Check for text in URL
+    public void checkForTextTrueUrl(String text){
+        String URL = kaijuDriver.getCurrentUrl();
+        assertTrue(text,true);
+        System.out.println(URL + " does contain " + text);
+    }
+
+    //Verify a URL
+    public void verifyUrl(String url){
+        String URL = kaijuDriver.getCurrentUrl();
+        Assert.assertEquals(url,URL);
+    }
 
     //Take a screenshot and save it to the resources file
     public void takeScreenShot(){
@@ -255,7 +316,50 @@ public class Kaiju {
         System.out.println(tagName + " contains " + text);
     }
 
-    //Locate element and click it ***************************
+    //Locate element and perform an action with it ***************************
+
+    //Click the dropdown by ID and select a value by index
+    public void selectDropDownById(String id, String index){
+        Select dropDown = new Select(kaijuDriver.findElement(By.id(id)));
+        //COA is currently index value 9
+        dropDown.selectByValue(index);
+        System.out.println("Selecting drop down value " + index);
+    }
+
+    //Click the dropdown by Name and select a value based on visible text
+    public void selectDropDownByNameAndSelectValueByVisibleText(String name, String text){
+        Select dropDown = new Select(kaijuDriver.findElement(By.name(name)));
+        dropDown.selectByVisibleText(text);
+        System.out.println("Selecting drop down by text " + text);
+    }
+
+    //Click the dropdown by ID and select a value based on visible text
+    public void selectDropDownByIdAndSelectValueByVisibleText(String id, String text){
+        Select dropDown = new Select(kaijuDriver.findElement(By.id(id)));
+        dropDown.selectByVisibleText(text);
+        System.out.println("Selecting drop down by text " + text);
+    }
+
+    //Clear a field by CSS Selector
+    public void getSelectorClearText(String cssSelector){
+        kaijuDriver.findElement(By.cssSelector(cssSelector)).clear();
+    }
+
+    //Clear a field by id
+    public void getIdClearText(String id){
+        kaijuDriver.findElement(By.id(id)).clear();
+    }
+
+    //Clear a field by Name
+    public void getNameClearText(String name){
+        kaijuDriver.findElement(By.name(name)).clear();
+    }
+
+    //Find element by selector and submit it
+    public void getFormCssSelectorAndSubmit(String selector){
+        kaijuDriver.findElement(By.cssSelector(selector)).submit();
+        System.out.println("Submitted Form");
+    }
 
     //Find element by css selector and click it
     public void clickSelector(String selector){
@@ -327,5 +431,13 @@ public class Kaiju {
     public void getNameSendKeys(String name, String text){
         System.out.println("Locating element by name " + name + " sending text input " + text);
         kaijuDriver.findElement(By.name(name)).sendKeys(text);
+    }
+
+    //Handle alerts and/or JS popups
+
+    //Alert
+    public void alert(){
+        Alert alert = kaijuDriver.switchTo().alert();
+        alert.accept();
     }
 }
