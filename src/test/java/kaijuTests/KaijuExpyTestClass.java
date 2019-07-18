@@ -1,8 +1,12 @@
+package kaijuTests;
+
+import kaijuPageMaps.ExpyLandingPageMap;
+import kaijuUtil.Kaiju;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-public class KaijuExpyTestClass {
+//Test logic is written here, while page objects are called from the page map class.
+public class KaijuExpyTestClass extends ExpyLandingPageMap {
     public static Kaiju kaiju;
 
     @Before
@@ -14,8 +18,8 @@ public class KaijuExpyTestClass {
     @Test
     public void navToExpyLandingPage(){
         kaiju.setDimensionBrowserWindow(1440, 900);
-        kaiju.getUrl("https://expansiagroup.com/");
-        kaiju.checkTitle("EXPANSIA - Deploy Technology Faster");
+        kaiju.getUrl(expyWebSite());
+        kaiju.checkTitle(expyWebSiteTitle());
     }
 
     @After

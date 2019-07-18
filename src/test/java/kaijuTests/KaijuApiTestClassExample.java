@@ -1,3 +1,5 @@
+package kaijuTests;
+
 import org.junit.Test;
 
 import static io.restassured.RestAssured.given;
@@ -34,9 +36,9 @@ public class KaijuApiTestClassExample {
     public void apiTestReturnJsonAssertString(){
         given()
                 .relaxedHTTPSValidation()
-                .get("http://echo.jsontest.com/key/value/Kaiju/QA")
+                .get("http://echo.jsontest.com/key/value/kaijuUtil.Kaiju/QA")
                 .then()
-                .body(containsString("Kaiju"))
+                .body(containsString("kaijuUtil.Kaiju"))
                 .statusCode(200)
                 .log()
                 .all();

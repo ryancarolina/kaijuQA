@@ -1,3 +1,6 @@
+package kaijuTests;
+
+import kaijuUtil.Kaiju;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

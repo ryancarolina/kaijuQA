@@ -1,4 +1,4 @@
-
+package kaijuUtil;
 
 import com.opencsv.CSVReader;
 import org.apache.commons.io.FileUtils;
