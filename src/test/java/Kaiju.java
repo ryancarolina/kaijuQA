@@ -1,13 +1,10 @@
-import com.gargoylesoftware.htmlunit.BrowserVersion;
-import com.gargoylesoftware.htmlunit.WebClient;
+
+
 import com.opencsv.CSVReader;
-import io.gatling.commons.stats.assertion.In;
 import org.apache.commons.io.FileUtils;
-import org.apache.poi.ss.formula.functions.Today;
 import org.junit.Assert;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -17,25 +14,22 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.io.FileReader;
-import java.lang.String;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-import java.time.format.DateTimeFormatter;
-import java.time.LocalDateTime;
 import java.util.logging.Level;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.*;
 
 
 /**
- * Created by Ghyst on 6/2/2017.
+ * Created by Ryan Conklin on 6/2/2017.
  */
 public class Kaiju {
     private static WebDriver kaijuDriver;
@@ -47,12 +41,11 @@ public class Kaiju {
 
     public Kaiju(String browserType){
         if (browserType.equals("CHROME")) {
-
             try {
                 //ChromeDriver ver 2.36
                 if(getOsName().contains("Windows")){
                     System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"/src/test/resources/chromedriver.exe");
-                    //ChromeDriver ver 2.43
+                    //ChromeDriver ver 2.46
                 }else if(getOsName().contains("Mac OS X")){
                     System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"/src/test/resources/chromedriver");
                 }
@@ -92,20 +85,6 @@ public class Kaiju {
             } catch (Exception e) {
                 System.out.println("Error during Remote Test Setup" + e.toString());
             }
-        } else if (browserType.equals("HTML")) {
-            try {
-                kaijuDriver = new HtmlUnitDriver(BrowserVersion.BEST_SUPPORTED,true) {
-                    //HtmlUnitDriver by default logs all notices, warnings, script errors.
-                    @Override
-                    protected WebClient newWebClient(BrowserVersion version) {
-                        WebClient webClient = super.newWebClient(version);
-                        webClient.getOptions().setThrowExceptionOnScriptError(false);
-                        return webClient;
-                    }
-                };
-            } catch(Exception e){
-                System.out.println("Error during HtmlUnit Test Setup" + e.toString());
-            }
         }
     }
 
@@ -113,6 +92,12 @@ public class Kaiju {
     public void loggingOff(){
         java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(Level.OFF);
         System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.NoOpLog");
+    }
+
+    //Access Driver
+    public WebDriver getDriver(){
+        WebDriver driver = kaijuDriver;
+        return driver;
     }
 
     //Time and Dates *********************************
@@ -187,10 +172,10 @@ public class Kaiju {
 
     }
 
-    //Kill the kaijuDriver
+    //Kill the web driver
     public void killKaijuDriver(){
         kaijuDriver.close();
-        System.out.println("Kaiju destroyed!");
+        System.out.println("Driver destroyed!");
     }
 
     //Scroll to bottom of page
@@ -205,6 +190,20 @@ public class Kaiju {
     }
 
     //Waits **********************************
+
+    //Wait for element to be NOT visible
+    public void waitForElementToBeNotVisibleByClass(String className, Integer secondsToWait, String attribute, String value){
+        System.out.println("Waiting for element " + className + " to be hidden for a max time of " + secondsToWait);
+        WebDriverWait wait = new WebDriverWait(kaijuDriver, secondsToWait);
+        wait.until(ExpectedConditions.attributeContains(By.className(className),attribute,value));
+    }
+
+    //Wait for element to be clickable
+    public void waitForElementToBeClickableByPartialLinkText(String text, Integer secondsToWait){
+        System.out.println("Waiting for element " + text + " to be clickable for a max time of " + secondsToWait);
+        WebDriverWait wait = new WebDriverWait(kaijuDriver, secondsToWait);
+        wait.until(ExpectedConditions.elementToBeClickable(By.partialLinkText(text)));
+    }
 
     //Wait for condition attribute contains by ID
     public void waitForConditionAttributeContainsId(String id, Integer secondsToWait, String attribute, String value){
@@ -285,27 +284,34 @@ public class Kaiju {
     //Assertions *******************************
 
     //Check expected title vs actual title
-    public void checkTitle(String title){
+    public String checkTitle(String title){
         String actualTitle = kaijuDriver.getTitle();
         String expectedTitle = title;
         assertEquals(expectedTitle, actualTitle);
         System.out.println("Title is " + actualTitle + " as expected");
+        return actualTitle;
     }
 
     //Check if element is displayed by Css Selector
-    public void checkForElementUsingCssSelector(String cssSelector){
+    public void checkIfElementIsDisplayedByCssSelector(String cssSelector){
         kaijuDriver.findElement(By.cssSelector(cssSelector)).isDisplayed();
         System.out.println("Element " + cssSelector + " is displayed");
     }
 
+    //Check if element is displayed by Partial Link Text
+    public void checkIfElementIsDisplayedByPartialLinkText(String text){
+        kaijuDriver.findElement(By.partialLinkText(text)).isDisplayed();
+        System.out.println("Element " + text + " is displayed");
+    }
+
     //Check if element is displayed by ID
-    public void checkForElementUsingId(String id){
+    public void checkIfElementIsDisplayedById(String id){
         kaijuDriver.findElement(By.id(id)).isDisplayed();
         System.out.println("Element " + id + " is displayed");
     }
 
     //Check if element is displayed by name
-    public void checkForElementUsingName(String name){
+    public void checkIfElementIsDisplayedByName(String name){
         kaijuDriver.findElement(By.name(name)).isDisplayed();
         System.out.println("Element " + name + " is displayed");
     }
@@ -317,7 +323,7 @@ public class Kaiju {
     }
 
     //Check if element is displayed using xpath
-    public void checkForElementUsingXpath(String path){
+    public void checkIfElementIsDisplayedByXpath(String path){
         kaijuDriver.findElement(By.xpath(path)).isDisplayed();
         System.out.println("Element " + path + " is displayed");
     }
@@ -411,6 +417,12 @@ public class Kaiju {
     public void getNameSendKeys(String name, String text){
         System.out.println("Locating element by name " + name + " sending text input " + text);
         kaijuDriver.findElement(By.name(name)).sendKeys(text);
+    }
+
+    //Get element by xpath and send text
+    public void getXpathSendKeys(String xpath, String text){
+        System.out.println("Locating element by xapth " + xpath + " sending text input " + text);
+        kaijuDriver.findElement(By.xpath(xpath)).sendKeys(text);
     }
 
     //Get attribute from web element through css selector
@@ -526,12 +538,14 @@ public class Kaiju {
     //Find element by partial link text and click it
     public void clickPartialLink(String link){
         kaijuDriver.findElement(By.partialLinkText(link)).click();
+        System.out.println("Clicking partial link " + link);
     }
 
     //Get target URL
-    public void getUrl(String url){
+    public String getUrl(String url){
         kaijuDriver.get(url);
         System.out.println("Navigating to " + url + " ");
+        return url;
     }
 
     //Read from data source *************************
@@ -565,7 +579,7 @@ public class Kaiju {
         while((nextLine = reader.readNext()) != null){
             System.out.println(nextLine[0] + " " + nextLine[1] + " " + nextLine[2]);
         }
-        
+
         return nextLine;
     }
 

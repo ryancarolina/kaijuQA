@@ -50,8 +50,6 @@
         </plugins>
     </build>
 
-
-
     <dependencies>
 
         <dependency>
@@ -135,11 +133,11 @@
             <version>9.1.0.v20131115</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>htmlunit-driver</artifactId>
-            <version>2.23.1</version>
-        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>org.seleniumhq.selenium</groupId>-->
+        <!--<artifactId>htmlunit-driver</artifactId>-->
+        <!--<version>2.23.1</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
@@ -163,19 +161,19 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-support</artifactId>
-            <version>3.10.0</version>
+            <version>3.13.0</version>
         </dependency>
 
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-api</artifactId>
-            <version>3.10.0</version>
+            <version>3.13.0</version>
         </dependency>
 
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>3.10.0</version>
+            <version>3.13.0</version>
         </dependency>
 
         <dependency>
@@ -251,6 +249,14 @@
             <artifactId>commons-io</artifactId>
             <version>2.4</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>3.0.3</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
@@ -258,13 +264,14 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>3.0.3</version>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-api</artifactId>
+            <version>3.141.59</version>
             <scope>test</scope>
         </dependency>
 
     </dependencies>
 
-    
+
+
 </project>
