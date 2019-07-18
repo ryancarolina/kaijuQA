@@ -277,7 +277,7 @@ public class KaijuGame {
                     System.out.println("\tPOTION FIND CHANCE: " + hpPotDropChance + "%");
                     System.out.println("\tWEAPON FIND CHANCE: " + wepDropChance + "%");
                     System.out.println("\tARMOR FIND CHANCE: " + armDropChance + "%");
-                    System.out.println("\tSPORT CHANCE: " + exploreChance + "%");
+                    System.out.println("\tSPOT CHANCE: " + exploreChance + "%");
                     System.out.println("\tGOLD: " + gold);
 
                     System.out.println("-------------------------------------------------------------------------------------");

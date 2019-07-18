@@ -19,8 +19,6 @@ public class KaijuTestClassExample {
     @Test
     public void csvTest() throws IOException {
         String[] csvOutput = kaiju.csvReadParse();
-
-        System.out.println(csvOutput);
     }
 
     //This test method will demo navigating to a URL, locating web elements by partial link text and then

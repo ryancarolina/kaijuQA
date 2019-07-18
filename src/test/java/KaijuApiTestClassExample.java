@@ -11,7 +11,7 @@ public class KaijuApiTestClassExample {
     public void apiTestExample(){
         given()
                 .relaxedHTTPSValidation()
-                .get("https://www.google.com")
+                .get("https://www.google.com/")
                 .then()
                 .body(containsString("google"))
                 .statusCode(200)
