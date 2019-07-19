@@ -1,5 +1,6 @@
 package kaijuTests;
 
+import kaijuPageMaps.EdgeLoginPageMap;
 import kaijuUtil.Kaiju;
 import org.junit.After;
 import org.junit.Before;
@@ -10,7 +11,7 @@ import java.io.IOException;
 /**
  * Created by Ghyst on 6/2/2017.
  */
-public class KaijuTestClassExample {
+public class KaijuTestClassExample extends EdgeLoginPageMap {
     public static Kaiju kaiju;
 
     @Before
@@ -36,7 +37,7 @@ public class KaijuTestClassExample {
         kaiju.setDimensionBrowserWindow(1440, 900);
 
         //Target URL
-        kaiju.getUrl("https://edge.ceterus.com/");
+        kaiju.getUrl(edgeWebSite());
 
         //Confirm element is visible before trying to interact with it
         kaiju.waitForElementVisibleByPartialLinkText("Forgot Your Password?", 30);

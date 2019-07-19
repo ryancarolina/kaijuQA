@@ -31,13 +31,8 @@ import static junit.framework.TestCase.*;
 /**
  * Created by Ryan Conklin on 6/2/2017.
  */
-public class Kaiju {
+public class Kaiju extends KaijuVarUtil {
     private static WebDriver kaijuDriver;
-    String sauceUsername = " ";
-    String sauceAccessKey = " ";
-    String sauceURL = "https://" + sauceUsername + ":" + sauceAccessKey + "@ondemand.saucelabs.com:443/wd/hub";
-    String osName = null;
-    String gridNode = "http://ec2-18-232-71-47.compute-1.amazonaws.com:4444/wd/hub";
 
     public Kaiju(String browserType){
         if (browserType.equals("CHROME")) {

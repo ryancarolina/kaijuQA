@@ -12,6 +12,21 @@
         <plugins>
 
             <plugin>
+                <groupId>com.github.stma</groupId>
+                <artifactId>yamllint-maven-plugin</artifactId>
+
+                <executions>
+                    <execution>
+                        <id>yamllint</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>yamllint</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
 
                 <groupId>io.gatling</groupId>
                 <artifactId>gatling-maven-plugin</artifactId>

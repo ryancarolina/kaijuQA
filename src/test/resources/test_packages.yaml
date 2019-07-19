@@ -1,0 +1,68 @@
+---
+
+- hosts: wins
+  #vars:
+    #Name: "name"
+    #Version: "version"
+    #PackageFullName: "package_name"
+    #InstallLocation: "location"
+    #package_nuget: "Microsoft.PackageManagement.NuGetProvider-2.8.5.208.dll"
+
+  tasks:
+
+  - name: Install git
+    win_chocolatey:
+     name: git
+     state: present
+
+  - win_shell: Get-Package -AllVersion
+    register: packages_installed
+
+  - debug:
+      var: packages_installed
+
+  - win_shell: dir C:\temp
+    register: listing
+
+  - debug:
+      var: listing
+
+# Powershell Community Extensions (PSCX) module is required
+- name: "Install PSCX"
+  win_psmodule:
+    name: Pscx
+    state: present
+
+# Unzip Ranorex binary 8.2.1
+- name: "Unzip Ranorex-8.2.1.exe.zip"
+  win_unzip:
+    src: Ranorex-8.2.1.exe.zip
+    dest: C:\temp\Ranorex-8.2.1.exe
+    recurse: yes
+    delete_archive: yes
+
+# Unzip CIE Ranorex solution
+- name: "Unzip cie_Test_Ranorex_8.2.1.zip"
+  win_unzip:
+    src: cie_Test_Ranorex_8.2.1.zip
+    dest: C:\temp\cie_Test_Ranorex_8.2.1
+    recurse: yes
+    delete_archive: yes
+
+# Install Ranorex 8.2.1 and stash output in var install_ranorex
+- win_shell: Start-Process -Wait -FilePath "C:\temp\Ranorex-8.2.1.exe" "/S" -PassThru
+  register: install_ranorex
+
+# Log Ranorex Install
+- debug:
+    var: install_ranorex
+
+# Copy CIE Ranorex solution to RanorexStudio Projects dir
+- name: "Copy cie_Test_Ranorex_8.2.1 to RanorexStudio Projects dir"
+  win_copy:
+    src: C:\temp\cie_Test_Ranorex_8.2.1
+    dest: C:\Users\Administrator\Documents\Ranorex\RanorexStudio Projects\cie_Test_Ranorex_8.2.1
+
+# Execute Ranorex solution via cmd line
+#- name: "Execute Ranorex CIE test solution"
+    #win_command: C:\Users\Administrator\Documents\Ranorex\RanorexStudio Projects\cie_Test_Ranorex_8.2.1\cie_Test_Ranorex_8.2.1\bin\Debug>cie_Test_Ranorex_8.2.1.exe /testcase:TestCase_AssertFirefoxInstall
