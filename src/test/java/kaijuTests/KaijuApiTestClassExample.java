@@ -1,6 +1,14 @@
 package kaijuTests;
 
 import org.junit.Test;
+import org.yaml.snakeyaml.Yaml;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -9,6 +17,7 @@ import static org.hamcrest.CoreMatchers.containsString;
  * Created by Ghyst on 6/5/2017.
  */
 public class KaijuApiTestClassExample {
+
     @Test
     public void apiTestExample(){
         given()

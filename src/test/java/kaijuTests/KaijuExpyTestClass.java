@@ -16,6 +16,11 @@ public class KaijuExpyTestClass extends ExpyLandingPageMap {
     }
 
     @Test
+    public void ansiblePlaybookLint(){
+        kaiju.yamlLint("src/test/resources/test_packages.yaml");
+    }
+
+    @Test
     public void navToExpyLandingPage(){
         kaiju.setDimensionBrowserWindow(1440, 900);
         kaiju.getUrl(expyWebSite());

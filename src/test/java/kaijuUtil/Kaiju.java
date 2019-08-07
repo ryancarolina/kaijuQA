@@ -11,9 +11,12 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.time.LocalDate;
@@ -136,6 +139,22 @@ public class Kaiju extends KaijuVarUtil {
     }
 
     //Misc ****************************************
+
+    //Lint Yaml files
+    public void yamlLint(String path){
+        try{
+
+            InputStream input = new FileInputStream(new File(path));
+            Yaml yaml = new Yaml();
+            //TODO use loadALL to lint a dir?
+            Object data = yaml.load(input);
+
+            System.out.println("+++ Yaml Lint PASSED: " + data);
+
+        }catch(Exception e){
+            System.out.println("+++ Yaml Lint FAILED " + e);
+        }
+    }
 
     //Return a random integer between 1 and 100
     public Integer random1To100(){
