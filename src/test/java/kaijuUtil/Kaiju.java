@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.InputStream;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.time.LocalDate;
@@ -144,15 +145,17 @@ public class Kaiju extends KaijuVarUtil {
     public void yamlLint(String path){
         try{
 
-            InputStream input = new FileInputStream(new File(path));
+            InputStream inputFile = new FileInputStream(new File(path));
             Yaml yaml = new Yaml();
-            //TODO use loadALL to lint a dir?
-            Object data = yaml.load(input);
+            //TODO Lint all yaml in a dir
+            Object data = yaml.load(inputFile);
 
             System.out.println("+++ Yaml Lint PASSED: " + data);
 
         }catch(Exception e){
-            System.out.println("+++ Yaml Lint FAILED " + e);
+            fail("+++ Yaml Lint FAILED " + e);
+            //System.out.println("+++ Yaml Lint FAILED " + e);
+
         }
     }
 

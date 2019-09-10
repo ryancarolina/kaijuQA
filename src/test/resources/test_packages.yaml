@@ -15,7 +15,7 @@
      name: git
      state: present
 
-   - win_shell: Get-Package -AllVersion
+  - win_shell: Get-Package -AllVersion
     register: packages_installed
 
   - debug:
