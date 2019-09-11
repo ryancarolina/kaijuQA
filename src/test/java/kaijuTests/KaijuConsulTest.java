@@ -17,4 +17,6 @@ public class KaijuConsulTest {
                 .then().assertThat().body(containsString("Consul by HashiCorp"))
                 .log().all().statusCode(200);
     }
+
+    //TODO Consul's api supports various testing and agent health checks.
 }
