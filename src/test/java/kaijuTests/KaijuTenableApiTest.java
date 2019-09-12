@@ -20,7 +20,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 /**
  * Created by Ghyst on 6/5/2017.
  */
-public class KaijuApiTestClassExample extends KaijuVarUtil {
+public class KaijuTenableApiTest extends KaijuVarUtil {
 
     CookieFilter filter = new CookieFilter();
 
@@ -56,29 +56,29 @@ public class KaijuApiTestClassExample extends KaijuVarUtil {
         return retVal;
     }
 
-    @Test
-    public void apiTestAcasReturnScans(){
-        given()
-                .relaxedHTTPSValidation()
-                .filter(filter)
-                .spec(getTokenTenable(acasName, acasPass))
-                .get("https://ec2-52-61-216-124.us-gov-west-1.compute.amazonaws.com:4444/rest/scan")
-                .then()
-                .log()
-                .all();
-    }
+//    @Test
+//    public void apiTestAcasReturnScans(){
+//        given()
+//                .relaxedHTTPSValidation()
+//                .filter(filter)
+//                .spec(getTokenTenable(acasName, acasPass))
+//                .get("https://ec2-52-61-216-124.us-gov-west-1.compute.amazonaws.com:4444/rest/scan")
+//                .then()
+//                .log()
+//                .all();
+//    }
 
-    @Test
-    public void apiTestAcasReturnScanById(){
-        given()
-                .relaxedHTTPSValidation()
-                .filter(filter)
-                .spec(getTokenTenable(acasName, acasPass))
-                .get("https://ec2-52-61-216-124.us-gov-west-1.compute.amazonaws.com:4444/rest/scan/1")
-                .then()
-                .log()
-                .all();
-    }
+//    @Test
+//    public void apiTestAcasReturnScanById(){
+//        given()
+//                .relaxedHTTPSValidation()
+//                .filter(filter)
+//                .spec(getTokenTenable(acasName, acasPass))
+//                .get("https://ec2-52-61-216-124.us-gov-west-1.compute.amazonaws.com:4444/rest/scan/1")
+//                .then()
+//                .log()
+//                .all();
+//    }
 
     @Test
     public void apiTestAcasLaunchScan(){
@@ -92,26 +92,4 @@ public class KaijuApiTestClassExample extends KaijuVarUtil {
                 .all().statusCode(200);
     }
 
-    @Test
-    public void apiTestReturnHttpRequestHeaders(){
-        given()
-                .relaxedHTTPSValidation()
-                .get("http://headers.jsontest.com/")
-                .then()
-                .statusCode(200)
-                .log()
-                .all();
-    }
-
-    @Test
-    public void apiTestReturnJsonAssertString(){
-        given()
-                .relaxedHTTPSValidation()
-                .get("http://echo.jsontest.com/key/value/kaijuUtil.Kaiju/QA")
-                .then()
-                .body(containsString("kaijuUtil.Kaiju"))
-                .statusCode(200)
-                .log()
-                .all();
-    }
 }
