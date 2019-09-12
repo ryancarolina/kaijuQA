@@ -7,5 +7,7 @@ public class KaijuVarUtil {
     String sauceAccessKey = " ";
     String sauceURL = "https://" + sauceUsername + ":" + sauceAccessKey + "@ondemand.saucelabs.com:443/wd/hub";
     String osName = null;
+    public String acasName = "rconklin";
+    public String acasPass = "Temp1234";
 
 }
