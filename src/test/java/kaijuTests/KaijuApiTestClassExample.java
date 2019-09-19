@@ -5,11 +5,11 @@ import org.junit.Test;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.containsString;
 
-public class KaijuApiTestClass {
+public class KaijuApiTestClassExample {
 
     @Test
 
-    public void apiLabTestMethod(){
+    public void apiTestExample(){
 
         given()
                 .relaxedHTTPSValidation()
