@@ -11,7 +11,7 @@ public class KaijuExpyTestClass extends ExpyLandingPageMap {
 
     @Before
     public void setUp(){
-        kaiju = new Kaiju("CHROME");
+        kaiju = new Kaiju("GRID");
         System.out.println(kaiju + " Unleashed!");
     }
 

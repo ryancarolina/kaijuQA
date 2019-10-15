@@ -2,7 +2,7 @@ package kaijuUtil;
 
 public class KaijuVarUtil {
 
-    String gridNode = "http://ec2-18-232-71-47.compute-1.amazonaws.com:4444/wd/hub";
+    String gridNode = "http://ec2-18-212-173-114.compute-1.amazonaws.com:4444/wd/hub";
     String sauceUsername = " ";
     String sauceAccessKey = " ";
     String sauceURL = "https://" + sauceUsername + ":" + sauceAccessKey + "@ondemand.saucelabs.com:443/wd/hub";
@@ -11,3 +11,5 @@ public class KaijuVarUtil {
     public String acasPass = "";
 
 }
+
+

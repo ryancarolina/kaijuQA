@@ -10,7 +10,7 @@ public class SpaceCampTestClass {
 
     @Before
     public void setUp(){
-        kaiju = new Kaiju("CHROME");
+        kaiju = new Kaiju("GRID");
     }
 
     @Test
@@ -40,6 +40,6 @@ public class SpaceCampTestClass {
 
     @After
     public void killKaiju(){
-        //kaiju.killKaijuDriver();
+        kaiju.killKaijuDriver();
     }
 }
