@@ -25,6 +25,15 @@ public class KaijuExpyTestClass extends ExpyLandingPageMap {
         kaiju.setDimensionBrowserWindow(1440, 900);
         kaiju.getUrl(expyWebSite());
         kaiju.checkTitle(expyWebSiteTitle());
+
+        kaiju.waitForElementVisibleByPartialLinkText("About", 20);
+        kaiju.clickPartialLink("About");
+        kaiju.waitForElementVisibleByPartialLinkText("About EXPANSIA", 20);
+        kaiju.clickPartialLink("About EXPANSIA");
+
+        kaiju.waitForElementVisibleById("thb-image-5d9b9a6122904", 20);
+        kaiju.takeScreenShot();
+
     }
 
     @After
