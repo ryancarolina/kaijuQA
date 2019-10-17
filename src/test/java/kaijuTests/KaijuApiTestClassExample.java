@@ -44,4 +44,18 @@ public class KaijuApiTestClassExample {
         System.out.println("Body contains Nashua, New Hampshire 03060-5636 as expected");
 
     }
+
+    @Test
+
+    public void apiTestExample3(){
+
+        given()
+                .relaxedHTTPSValidation()
+                .get("https://api.github.com/users")
+                .then()
+                .statusCode(200)
+                .log()
+                .all();
+
+    }
 }
