@@ -80,7 +80,7 @@ public class Kaiju extends KaijuVarUtil {
                 caps.setCapability("idleTimeout", "1000");
 
                 //noinspection deprecation
-                kaijuDriver = new RemoteWebDriver(new java.net.URL("http://ec2-18-212-173-114.compute-1.amazonaws.com:4444/wd/hub"), caps);
+                kaijuDriver = new RemoteWebDriver(new java.net.URL(gridNode), caps);
             } catch (Exception e) {
                 System.out.println("Error during Remote Test Setup" + e.toString());
             }
