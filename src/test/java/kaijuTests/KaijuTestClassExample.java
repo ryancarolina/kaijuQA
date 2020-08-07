@@ -17,7 +17,6 @@ public class KaijuTestClassExample extends EdgeLoginPageMap {
     @Before
     public void setUp(){
         kaiju = new Kaiju("CHROME");
-        System.out.println(kaiju + " Unleashed!");
     }
 
     @Test
