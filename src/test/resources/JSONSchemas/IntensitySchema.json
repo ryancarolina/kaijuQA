@@ -1,0 +1,153 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "title": "The root schema",
+  "description": "The root schema comprises the entire JSON document.",
+  "default": {},
+  "examples": [
+    {
+      "data": [
+        {
+          "from": "2020-08-07T02:30Z",
+          "to": "2020-08-07T03:00Z",
+          "intensity": {
+            "forecast": 206,
+            "actual": null,
+            "index": "moderate"
+          }
+        }
+      ]
+    }
+  ],
+  "required": [
+    "data"
+  ],
+  "properties": {
+    "data": {
+      "$id": "#/properties/data",
+      "type": "array",
+      "title": "The data schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": [],
+      "examples": [
+        [
+          {
+            "from": "2020-08-07T02:30Z",
+            "to": "2020-08-07T03:00Z",
+            "intensity": {
+              "forecast": 206,
+              "actual": null,
+              "index": "moderate"
+            }
+          }
+        ]
+      ],
+      "additionalItems": true,
+      "items": {
+        "$id": "#/properties/data/items",
+        "anyOf": [
+          {
+            "$id": "#/properties/data/items/anyOf/0",
+            "type": "object",
+            "title": "The first anyOf schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+              {
+                "from": "2020-08-07T02:30Z",
+                "to": "2020-08-07T03:00Z",
+                "intensity": {
+                  "forecast": 206,
+                  "actual": null,
+                  "index": "moderate"
+                }
+              }
+            ],
+            "required": [
+              "from",
+              "to",
+              "intensity"
+            ],
+            "properties": {
+              "from": {
+                "$id": "#/properties/data/items/anyOf/0/properties/from",
+                "type": "string",
+                "title": "The from schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": "",
+                "examples": [
+                  "2020-08-07T02:30Z"
+                ]
+              },
+              "to": {
+                "$id": "#/properties/data/items/anyOf/0/properties/to",
+                "type": "string",
+                "title": "The to schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": "",
+                "examples": [
+                  "2020-08-07T03:00Z"
+                ]
+              },
+              "intensity": {
+                "$id": "#/properties/data/items/anyOf/0/properties/intensity",
+                "type": "object",
+                "title": "The intensity schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": {},
+                "examples": [
+                  {
+                    "forecast": 206,
+                    "actual": null,
+                    "index": "moderate"
+                  }
+                ],
+                "required": [
+                  "forecast",
+                  "actual",
+                  "index"
+                ],
+                "properties": {
+                  "forecast": {
+                    "$id": "#/properties/data/items/anyOf/0/properties/intensity/properties/forecast",
+                    "type": "integer",
+                    "title": "The forecast schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": 0,
+                    "examples": [
+                      206
+                    ]
+                  },
+                  "actual": {
+                    "$id": "#/properties/data/items/anyOf/0/properties/intensity/properties/actual",
+                    "type": "null",
+                    "title": "The actual schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": null,
+                    "examples": [
+                      null
+                    ]
+                  },
+                  "index": {
+                    "$id": "#/properties/data/items/anyOf/0/properties/intensity/properties/index",
+                    "type": "string",
+                    "title": "The index schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                      "moderate"
+                    ]
+                  }
+                },
+                "additionalProperties": true
+              }
+            },
+            "additionalProperties": true
+          }
+        ]
+      }
+    }
+  },
+  "additionalProperties": true
+}
