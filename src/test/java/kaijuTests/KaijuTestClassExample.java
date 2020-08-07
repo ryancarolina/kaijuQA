@@ -29,6 +29,7 @@ public class KaijuTestClassExample extends EdgeLoginPageMap {
     //click it.
 
     @Test
+    //This test method makes use of the kaijuPageMaps
     public void edgeTest(){
         //Set implicit wait
         kaiju.impWait(10);
