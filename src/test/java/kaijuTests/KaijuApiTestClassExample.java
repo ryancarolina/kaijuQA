@@ -5,6 +5,7 @@ import org.junit.Test;
 import static io.restassured.RestAssured.given;
 import static junit.framework.TestCase.fail;
 import static org.hamcrest.CoreMatchers.containsString;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 
 public class KaijuApiTestClassExample {
 
@@ -53,6 +54,21 @@ public class KaijuApiTestClassExample {
                 .relaxedHTTPSValidation()
                 .get("https://api.github.com/users")
                 .then()
+                .statusCode(200)
+                .log()
+                .all();
+
+    }
+
+    @Test
+
+    public void carbonIntensity(){
+
+        given()
+                .relaxedHTTPSValidation()
+                .get("https://api.carbonintensity.org.uk/intensity")
+                .then().assertThat()
+                .body(matchesJsonSchemaInClasspath("JSONSchemas/IntensitySchema.json"))
                 .statusCode(200)
                 .log()
                 .all();
