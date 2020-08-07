@@ -5,6 +5,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -17,7 +18,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.InputStream;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.time.LocalDate;
@@ -26,6 +26,8 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
@@ -48,7 +50,15 @@ public class Kaiju extends KaijuVarUtil {
                 }else if(getOsName().contains("Mac OS X")){
                     System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"/src/test/resources/chromedriver");
                 }
-                kaijuDriver = new ChromeDriver();
+
+                //Disable browser notifications to desktop
+                DesiredCapabilities caps = DesiredCapabilities.chrome();
+
+                ChromeOptions options = new ChromeOptions();
+                options.addArguments("--disable-notifications");
+                caps.setCapability(ChromeOptions.CAPABILITY, options);
+
+                kaijuDriver = new ChromeDriver(caps);
             } catch (Exception e) {
                 System.out.println("Error during Chrome Test Setup" + e.toString());
             }
@@ -57,11 +67,17 @@ public class Kaiju extends KaijuVarUtil {
             try {
                 //Set the browser type and other options below
                 DesiredCapabilities caps = DesiredCapabilities.chrome();
+
+                ChromeOptions options = new ChromeOptions();
+                options.addArguments("--disable-notifications");
+                caps.setCapability(ChromeOptions.CAPABILITY, options);
+
                 //caps.setCapability("platform", "Windows 2016");
                 caps.setCapability("version", "");
                 caps.setCapability("name", "Test: " + getTime() );
                 //caps.setCapability("extendedDebugging", "false"); //Saucelabs known 504 gateway error with xDebugging enabled
                 caps.setCapability("idleTimeout", "1000");
+
 
                 //noinspection deprecation
                 kaijuDriver = new RemoteWebDriver(new java.net.URL(sauceURL), caps);
