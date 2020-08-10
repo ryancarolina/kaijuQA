@@ -1,13 +1,28 @@
 package kaijuTests;
 
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static io.restassured.RestAssured.given;
 import static junit.framework.TestCase.fail;
 import static org.hamcrest.CoreMatchers.containsString;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+import static org.hamcrest.CoreMatchers.equalTo;
 
+@RunWith(DataProviderRunner.class)
 public class KaijuApiTestClassExample {
+
+    @DataProvider
+    public static Object[][] zipCodesAndPlaces(){
+        return new Object[][]{
+                {"us", "90210", "Beverly Hills" },
+                {"us", "12345", "Schenectady"},
+                {"ca", "B2R", "Waverley"}
+        };
+    }
 
     @Test
 
@@ -73,5 +88,18 @@ public class KaijuApiTestClassExample {
                 .log()
                 .all();
 
+    }
+
+    @Test
+    @UseDataProvider("zipCodesAndPlaces")
+    public void pathParameterTest(String countryCode, String zipCode, String expectedPlaceName){
+
+        given()
+                .pathParam("countryCode", countryCode).pathParam("zipCode",zipCode).
+                when()
+                .get("https://zippopotam.us/{countryCode}/{zipCode}").
+                then()
+                .assertThat()
+                .body("places[0].'place name'", equalTo(expectedPlaceName));
     }
 }
